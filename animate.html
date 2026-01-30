@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>SVG Transit Animation – Camera + Keyboard Control</title>
+
+<style>
+  body {
+    margin: 0;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .frame {
+    width: 90vw;
+    max-width: 1280px;
+    aspect-ratio: 16 / 9;
+    background: #fff;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ---- Path animation ---- */
+    .draw-path {
+        fill: none;
+        stroke-width: 12;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        vector-effect: non-scaling-stroke;
+
+        stroke-dasharray: var(--len, 1000);
+        stroke-dashoffset: var(--len, 1000);
+
+        /* animation: draw 2s ease-in-out forwards;
+        animation-play-state: paused; */
+    }
+
+    @keyframes draw {
+        from { stroke-dashoffset: var(--len); }
+        to   { stroke-dashoffset: 0; }
+    }
+
+    .playing .draw-path {
+        animation-play-state: running;
+    }
+
+
+</style>
+</head>
+
+<body>
+
+<div class="frame">
+  <svg id="svg" viewBox="0 0 1100 662" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- Add as many paths as you want -->
+    <!--<path class="draw-path" d="M473.867 136.664L360.99 23.7868C349.618 12.4146 331.301 12.0332 319.465 22.9221L47.2945 273.319C5.44809 311.818 4.08212 377.415 44.2895 417.623L170.726 544.059C189.479 562.812 200.015 588.248 200.015 614.77V1098.23C200.015 1122.48 208.831 1145.91 224.821 1164.15L643.83 1642.08C662.818 1663.74 690.222 1676.16 719.024 1676.16H1249.61C1255.36 1676.16 1260.99 1674.51 1265.83 1671.39L1297.81 1650.83C1335.74 1626.46 1385.28 1630.46 1418.79 1660.62L1481.54 1717.1C1499.91 1733.63 1523.74 1742.77 1548.44 1742.77H2618.91C2643.62 1742.77 2667.45 1733.63 2685.81 1717.1L2702.78 1701.83C2721.14 1685.3 2744.97 1676.16 2769.67 1676.16H2982.55C2999.12 1676.16 3012.55 1689.59 3012.55 1706.16V1823.79C3012.55 1840.36 3025.99 1853.79 3042.55 1853.79H3661.61C3716.84 1853.79 3761.61 1898.56 3761.61 1953.79V2354.36C3761.61 2365.65 3767.94 2375.97 3777.99 2381.09L4106.45 2548.35C4133.84 2562.29 4167.08 2557.02 4188.81 2535.29C4211.08 2513.02 4245.38 2508.1 4273.01 2523.22L4633.21 2720.2C4672.7 2741.8 4721.77 2734.34 4753.07 2701.98L5136.76 2305.28M1259.42 1678.45L1370.21 1798.73C1389.14 1819.28 1415.81 1830.98 1443.76 1830.98H1594.88C1619.27 1830.98 1642.81 1822.07 1661.09 1805.93L1732.65 1742.71M2547.92 1742.67V1779.18C2547.92 1804.08 2560.14 1827.4 2580.61 1841.57C2593.3 1850.36 2608.37 1855.06 2623.81 1855.06H3014.77M3616.43 1856.56V2214.13C3616.43 2245.71 3631.34 2275.43 3656.66 2294.31L3764.3 2374.54" />
+    <path class="draw-path" d="M473.867 136.664L360.99 23.7868C349.618 12.4146 331.301 12.0332 319.465 22.9221L47.2945 273.319C5.44809 311.818 4.08212 377.415 44.2895 417.623L170.726 544.059C189.479 562.812 200.015 588.248 200.015 614.77V1098.23C200.015 1122.48 208.831 1145.91 224.821 1164.15L643.83 1642.08C662.818 1663.74 690.222 1676.16 719.024 1676.16H1249.61C1255.36 1676.16 1260.99 1674.51 1265.83 1671.39L1297.81 1650.83C1335.74 1626.46 1385.28 1630.46 1418.79 1660.62L1481.54 1717.1C1499.91 1733.63 1523.74 1742.77 1548.44 1742.77H2618.91C2643.62 1742.77 2667.45 1733.63 2685.81 1717.1L2702.78 1701.83C2721.14 1685.3 2744.97 1676.16 2769.67 1676.16H2982.55C2999.12 1676.16 3012.55 1689.59 3012.55 1706.16V1823.79C3012.55 1840.36 3025.99 1853.79 3042.55 1853.79H3661.61C3716.84 1853.79 3761.61 1898.56 3761.61 1953.79V2354.36C3761.61 2365.65 3767.94 2375.97 3777.99 2381.09L4106.45 2548.35C4133.84 2562.29 4167.08 2557.02 4188.81 2535.29C4211.08 2513.02 4245.38 2508.1 4273.01 2523.22L4633.21 2720.2C4672.7 2741.8 4721.77 2734.34 4753.07 2701.98L5136.76 2305.28" />
+    <path class="draw-path" d="M473.867 136.664L360.99 23.7869C349.618 12.4147 331.301 12.0332 319.465 22.9221L47.2945 273.319C5.44809 311.818 4.08212 377.415 44.2895 417.623L170.726 544.059C189.479 562.813 200.015 588.248 200.015 614.77V1098.23C200.015 1122.48 208.831 1145.91 224.821 1164.15L643.83 1642.08C662.818 1663.74 690.222 1676.16 719.024 1676.16L1246.35 1678.39C1254.69 1678.43 1262.63 1681.93 1268.28 1688.07L1370.21 1798.73C1389.14 1819.28 1415.81 1830.98 1443.76 1830.98H1594.88C1619.27 1830.98 1642.81 1822.07 1661.09 1805.93L1704.29 1767.77C1722.56 1751.62 1746.11 1742.71 1770.49 1742.71L2547.92 1742.67V1779.18C2547.92 1804.08 2560.14 1827.4 2580.61 1841.57C2593.3 1850.36 2608.37 1855.06 2623.81 1855.06H3014.77L3616.43 1856.56V2214.13C3616.43 2245.71 3631.34 2275.43 3656.66 2294.31L3762.24 2373.01C3763.61 2374.03 3765.06 2374.93 3766.58 2375.7L4106.45 2548.35C4133.84 2562.29 4167.08 2557.02 4188.81 2535.29C4211.08 2513.02 4245.38 2508.1 4273.01 2523.22L4633.21 2720.2C4672.7 2741.8 4721.77 2734.34 4753.07 2701.98L5136.76 2305.28" />
+  -->
+    <path class="draw-path" stroke="#0077CA" d="M6.24529 144.5H32.9953C50.6798 144.5 69.2069 145.94 84.0372 155.573C88.4004 158.407 92.4525 161.879 96.428 166.566C108.123 180.354 110.933 191.946 113.245 211V283" />
+    <path class="draw-path" stroke="#003C71" d="M148.745 40.5V191.5C146.764 205.7 142.89 220.07 133.374 230.794C125.21 239.993 116.449 244.87 104.199 248.503C96.3693 250.825 88.0717 251.335 80.0257 249.934C58.9796 246.268 45.3368 238.104 37.5682 223.228C33.3782 215.205 32.7453 205.917 32.7453 196.866V98.5C32.7453 95.1863 35.4316 92.5 38.7453 92.5H194.245" />
+    <path class="draw-path" stroke="#E75D2A" d="M208.245 135H128.245C126.036 135 124.245 133.209 124.245 131V121C124.245 118.791 122.454 117 120.245 117H110.745C108.536 117 106.745 115.209 106.745 113V6.5" />
+
+
+</svg>
+</div>
+
+
+
+<script>
+  const svg = document.getElementById("svg");
+  const paths = document.querySelectorAll(".draw-path");
+
+  /* ---- Init path lengths ---- */
+    paths.forEach((path, i) => {
+        const len = path.getTotalLength();
+        path.style.setProperty('--len', len);
+        path.dataset.delay = i * 0.6;
+    });
+
+
+
+
+
+  /* ---- Playback ---- */
+  let playing = false;
+
+    function togglePlay() {
+    playing = !playing;
+
+        if (playing) {
+            paths.forEach((path) => {
+            path.style.animation = "draw 2s ease-in-out forwards";
+            });
+        } else {
+            paths.forEach((path) => {
+            path.style.animation = "none";
+            });
+        }
+    }
+
+
+    function resetAnimation() {
+        svg.classList.remove("playing");
+
+        paths.forEach((path) => {
+            path.style.animation = "none";
+            path.getBoundingClientRect();
+            path.style.animation = "";
+        });
+
+        playing = false;
+    }
+
+
+  /* ---- Camera auto-fit ---- */
+  const bbox = svg.getBBox();
+  let viewBox = {
+    x: bbox.x - 100,
+    y: bbox.y - 100,
+    w: bbox.width + 200,
+    h: bbox.height + 200
+  };
+
+  function updateViewBox() {
+    svg.setAttribute(
+      "viewBox",
+      `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`
+    );
+  }
+
+  updateViewBox();
+
+  /* ---- Keyboard controls ---- */
+  const PAN_STEP = 40;
+  const ZOOM_FACTOR = 0.9;
+
+  function zoom(factor) {
+    const cx = viewBox.x + viewBox.w / 2;
+    const cy = viewBox.y + viewBox.h / 2;
+
+    viewBox.w *= factor;
+    viewBox.h *= factor;
+
+    viewBox.x = cx - viewBox.w / 2;
+    viewBox.y = cy - viewBox.h / 2;
+  }
+
+  window.addEventListener("keydown", (e) => {
+    switch (e.key) {
+      case "ArrowLeft":
+        viewBox.x -= PAN_STEP;
+        break;
+      case "ArrowRight":
+        viewBox.x += PAN_STEP;
+        break;
+      case "ArrowUp":
+        viewBox.y -= PAN_STEP;
+        break;
+      case "ArrowDown":
+        viewBox.y += PAN_STEP;
+        break;
+      case "+":
+      case "=":
+        zoom(ZOOM_FACTOR);
+        break;
+      case "-":
+        zoom(1 / ZOOM_FACTOR);
+        break;
+      case "k":
+      case "K":
+        togglePlay();
+        return;
+      case "r":
+      case "R":
+        resetAnimation();
+        return;
+      default:
+        return;
+    }
+    updateViewBox();
+  });
+
+  /* ---- Mouse wheel zoom ---- */
+  svg.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    zoom(e.deltaY > 0 ? 1.1 : 0.9);
+    updateViewBox();
+  }, { passive: false });
+</script>
+
+
+</body>
+</html>
