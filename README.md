@@ -1,6 +1,6 @@
 # Linimate
-<img src="Assets/BMUBlack.png#gh-light-mode-only" alt="Light mode logo" width="450">
-<img src="Assets/BMUWhite.png#gh-dark-mode-only" alt="Dark mode logo" width="450">
+<img src="Assets/LinimateBlack.png#gh-light-mode-only" alt="Light mode logo" width="450">
+<img src="Assets/LinimateWhite.png#gh-dark-mode-only" alt="Dark mode logo" width="450">
 
 ## About
 
